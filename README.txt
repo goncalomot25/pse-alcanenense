@@ -1,8 +1,12 @@
-PSE Alcanenense - V7 escala horizontal
+PSE Alcanenense - V8 escala moderna com logótipos
 
-Esta versão mantém o design atual, mas substitui a escala antiga por uma imagem horizontal mais compacta e moderna.
+Esta versão mantém a app anterior, mas melhora a escala PSE:
+- escala horizontal moderna
+- símbolo do Atlético Clube Alcanenense
+- símbolo da FPF
+- leitura mais limpa no telemóvel
 
 Como abrir:
-cd ~/Downloads/app_pse_alcanenense_v7_escala_horizontal
+cd ~/Downloads/app_pse_alcanenense_v8_escala_moderna_logotipos
 python3 -m pip install -r requirements.txt
 python3 -m streamlit run app_pse_alcanenense.py
