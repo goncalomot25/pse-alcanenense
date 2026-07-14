@@ -1,15 +1,8 @@
-PSE Alcanenense - V5 Excel limpo
+PSE Alcanenense - V7 escala horizontal
 
-Esta versão mantém o design anterior, mas a tabela e o Excel exportado mostram apenas:
-- Data e hora
-- Atleta
-- PSE
-- Classificação
+Esta versão mantém o design atual, mas substitui a escala antiga por uma imagem horizontal mais compacta e moderna.
 
 Como abrir:
-cd ~/Downloads/app_pse_alcanenense_v5_excel_limpo
+cd ~/Downloads/app_pse_alcanenense_v7_escala_horizontal
 python3 -m pip install -r requirements.txt
 python3 -m streamlit run app_pse_alcanenense.py
-
-Password dos treinadores:
-A password está definida dentro do ficheiro app_pse_alcanenense.py.

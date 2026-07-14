@@ -160,6 +160,36 @@ st.markdown("""
         box-shadow: 0px 5px 16px rgba(0,0,0,0.10);
         border-left: 6px solid #111111;
     }
+
+    /* Texto principal em preto para melhor leitura no fundo amarelo */
+    .stApp, .stApp p, .stApp label, .stApp span, .stApp div {
+        color: #111111;
+    }
+
+    /* Manter o cabeçalho com contraste */
+    .header-box, .header-box div, .header-title {
+        color: #f5e51b !important;
+    }
+
+    .header-subtitle {
+        color: #ffffff !important;
+    }
+
+    /* Manter a sidebar legível */
+    [data-testid="stSidebar"], [data-testid="stSidebar"] * {
+        color: #f5e51b !important;
+    }
+
+    /* Mensagens */
+    .stAlert div {
+        color: #111111 !important;
+    }
+
+    /* Botões */
+    .stButton > button, .stDownloadButton > button {
+        color: #f5e51b !important;
+    }
+
 </style>
 """, unsafe_allow_html=True)
 
