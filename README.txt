@@ -1,12 +1,12 @@
-PSE Alcanenense - V9 escala premium
+PSE Alcanenense - V10 dropdown atletas
 
-Esta versão mantém a app e substitui a escala por uma versão mais moderna:
-- fundo escuro premium
-- escala horizontal mais limpa
-- símbolos do Alcanenense e FPF
-- melhor leitura em telemóvel
+Alterações:
+- escala premium sem caixa branca no símbolo da direita
+- seleção do atleta por drop-list
+- opção 'Outro' para escrever o nome manualmente
+- Excel continua com Data e hora, Atleta, PSE e Classificação
 
 Como abrir:
-cd ~/Downloads/app_pse_alcanenense_v9_escala_premium
+cd ~/Downloads/app_pse_alcanenense_v10_dropdown_atletas
 python3 -m pip install -r requirements.txt
 python3 -m streamlit run app_pse_alcanenense.py

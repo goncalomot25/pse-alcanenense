@@ -5,6 +5,7 @@ from pathlib import Path
 from datetime import datetime
 from io import BytesIO
 import plotly.express as px
+import base64
 
 st.set_page_config(
     page_title="PSE Alcanenense",
@@ -16,6 +17,31 @@ DATA_FILE = Path("respostas_pse.csv")
 LOGO_FILE = Path("logo_aca.png")
 SCALE_FILE = Path("escala_pse.png")
 PASSWORD_TREINADOR = "aca2026"
+
+# Lista de atletas para aparecer na drop-list.
+# Podes alterar estes nomes no GitHub quando tiveres a lista final.
+ATLETAS = [
+    "Seleciona o teu nome",
+    "Afonso Maia Netto",
+    "Afonso Quaresma Bento",
+    "Andre Afonso Boura",
+    "Andre Filipe Martins Fernandes",
+    "Diogo Ferreira Dos Santos Paveia",
+    "Duarte Ribeiro Sousa Henriques",
+    "Gonçalo Filipe Rosa Mota",
+    "Henrique Pereira Damásio",
+    "Hugo Pereira Carvalho",
+    "Lucas Nunes Freire",
+    "Martim Ferreira Moreira",
+    "Miguel Vila Nova Rocha",
+    "Nuno Gabriel Souto Silva",
+    "Pedro De Sousa Mota Gameiro",
+    "Ricardo Miguel Sousa Faria",
+    "Ryan Mateus Villa Nova Silveira",
+    "Simão Fernandes Sousa",
+    "Tiago Roberto Rego Teixeira",
+    "Outro"
+]
 
 
 def carregar_dados():
@@ -113,35 +139,34 @@ st.markdown("""
         font-weight: 500;
     }
 
-    .panel {
-        background-color: white;
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0px 8px 22px rgba(0,0,0,0.13);
-        border: 1px solid rgba(0,0,0,0.08);
-    }
-
-    .dark-panel {
-        background-color: #111111;
-        color: white;
-        border-radius: 20px;
-        padding: 24px;
-        box-shadow: 0px 8px 22px rgba(0,0,0,0.18);
-        border: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .dark-panel h3 {
-        color: #f5e51b;
-    }
-
     h1, h2, h3 {
         color: #111111;
         font-weight: 850;
     }
 
+    .stApp, .stApp p, .stApp label, .stApp span, .stApp div {
+        color: #111111;
+    }
+
+    .header-box, .header-box div, .header-title {
+        color: #f5e51b !important;
+    }
+
+    .header-subtitle {
+        color: #ffffff !important;
+    }
+
+    [data-testid="stSidebar"], [data-testid="stSidebar"] * {
+        color: #f5e51b !important;
+    }
+
+    .stAlert div {
+        color: #111111 !important;
+    }
+
     .stButton > button, .stDownloadButton > button {
         background-color: #050505;
-        color: #f5e51b;
+        color: #f5e51b !important;
         border: none;
         border-radius: 12px;
         font-weight: 800;
@@ -150,7 +175,7 @@ st.markdown("""
 
     .stButton > button:hover, .stDownloadButton > button:hover {
         background-color: #222222;
-        color: #fff27a;
+        color: #fff27a !important;
     }
 
     div[data-testid="stMetric"] {
@@ -160,44 +185,11 @@ st.markdown("""
         box-shadow: 0px 5px 16px rgba(0,0,0,0.10);
         border-left: 6px solid #111111;
     }
-
-    /* Texto principal em preto para melhor leitura no fundo amarelo */
-    .stApp, .stApp p, .stApp label, .stApp span, .stApp div {
-        color: #111111;
-    }
-
-    /* Manter o cabeçalho com contraste */
-    .header-box, .header-box div, .header-title {
-        color: #f5e51b !important;
-    }
-
-    .header-subtitle {
-        color: #ffffff !important;
-    }
-
-    /* Manter a sidebar legível */
-    [data-testid="stSidebar"], [data-testid="stSidebar"] * {
-        color: #f5e51b !important;
-    }
-
-    /* Mensagens */
-    .stAlert div {
-        color: #111111 !important;
-    }
-
-    /* Botões */
-    .stButton > button, .stDownloadButton > button {
-        color: #f5e51b !important;
-    }
-
 </style>
 """, unsafe_allow_html=True)
 
-
-# Cabeçalho sem st.columns dentro de caixas, para evitar barras estranhas
 logo_html = ""
 if LOGO_FILE.exists():
-    import base64
     logo_bytes = LOGO_FILE.read_bytes()
     logo_b64 = base64.b64encode(logo_bytes).decode()
     logo_html = f'<img src="data:image/png;base64,{logo_b64}" style="width:105px; border-radius:12px; margin-bottom:8px;">'
@@ -218,11 +210,8 @@ pagina = st.sidebar.radio(
     ["Atleta - Responder", "Treinador - Análise"]
 )
 
-
-
 if pagina == "Atleta - Responder":
     st.subheader("Escala PSE")
-    st.write("Consulta a escala antes de responder.")
 
     if SCALE_FILE.exists():
         st.image(str(SCALE_FILE), use_container_width=True)
@@ -232,16 +221,14 @@ if pagina == "Atleta - Responder":
     st.divider()
 
     st.subheader("Responder ao formulário")
-    st.write("Indica o número que melhor representa o esforço que sentiste durante o treino.")
+    st.write("Seleciona o teu nome e indica o número que melhor representa o esforço que sentiste durante o treino.")
 
     with st.form("formulario_pse", clear_on_submit=True):
-        c1, c2 = st.columns(2)
+        atleta_selecionado = st.selectbox("Nome do atleta", ATLETAS)
 
-        with c1:
-            primeiro_nome = st.text_input("Primeiro nome")
-
-        with c2:
-            segundo_nome = st.text_input("Segundo nome")
+        atleta_outro = ""
+        if atleta_selecionado == "Outro":
+            atleta_outro = st.text_input("Escreve o teu nome completo")
 
         pse = st.select_slider(
             "Qual foi a tua perceção do esforço durante o treino de hoje?",
@@ -254,18 +241,24 @@ if pagina == "Atleta - Responder":
         enviar = st.form_submit_button("Enviar resposta")
 
         if enviar:
-            if primeiro_nome.strip() == "" or segundo_nome.strip() == "":
-                st.error("Preenche o primeiro e o segundo nome.")
+            if atleta_selecionado == "Seleciona o teu nome":
+                st.error("Seleciona o teu nome.")
+            elif atleta_selecionado == "Outro" and atleta_outro.strip() == "":
+                st.error("Escreve o teu nome completo.")
             else:
                 agora = datetime.now()
-                atleta = f"{primeiro_nome.strip()} {segundo_nome.strip()}"
+                atleta = atleta_outro.strip() if atleta_selecionado == "Outro" else atleta_selecionado
+
+                partes_nome = atleta.split()
+                primeiro_nome = partes_nome[0] if len(partes_nome) > 0 else ""
+                segundo_nome = " ".join(partes_nome[1:]) if len(partes_nome) > 1 else ""
 
                 resposta = {
                     "Data e hora": agora.strftime("%Y-%m-%d %H:%M:%S"),
                     "Data": agora.strftime("%Y-%m-%d"),
                     "Hora": agora.strftime("%H:%M:%S"),
-                    "Primeiro nome": primeiro_nome.strip(),
-                    "Segundo nome": segundo_nome.strip(),
+                    "Primeiro nome": primeiro_nome,
+                    "Segundo nome": segundo_nome,
                     "Atleta": atleta,
                     "PSE": pse,
                     "Classificação": classificar_pse(pse)
