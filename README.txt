@@ -1,12 +1,14 @@
-PSE Alcanenense - V10 dropdown atletas
+PSE Alcanenense - V11 Google Sheets
 
-Alterações:
-- escala premium sem caixa branca no símbolo da direita
-- seleção do atleta por drop-list
-- opção 'Outro' para escrever o nome manualmente
-- Excel continua com Data e hora, Atleta, PSE e Classificação
+Esta versão guarda as respostas no Google Sheets, para não perder dados quando o Streamlit adormece ou reinicia.
 
-Como abrir:
-cd ~/Downloads/app_pse_alcanenense_v10_dropdown_atletas
-python3 -m pip install -r requirements.txt
-python3 -m streamlit run app_pse_alcanenense.py
+Ficheiros para carregar no GitHub:
+- app_pse_alcanenense.py
+- requirements.txt
+- logo_aca.png
+- escala_pse.png
+
+É preciso configurar Secrets no Streamlit:
+- SHEET_ID
+- PASSWORD_TREINADOR
+- gcp_service_account
