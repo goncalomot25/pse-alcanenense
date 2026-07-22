@@ -1,6 +1,10 @@
-PSE Alcanenense - V11 Google Sheets
+PSE Alcanenense - V12 Google Sheets simples
 
-Esta versão guarda as respostas no Google Sheets, para não perder dados quando o Streamlit adormece ou reinicia.
+Esta versão guarda no Google Sheets exatamente com estas colunas:
+A1: Data
+B1: Hora
+C1: Atleta
+D1: PSE
 
 Ficheiros para carregar no GitHub:
 - app_pse_alcanenense.py
@@ -8,7 +12,4 @@ Ficheiros para carregar no GitHub:
 - logo_aca.png
 - escala_pse.png
 
-É preciso configurar Secrets no Streamlit:
-- SHEET_ID
-- PASSWORD_TREINADOR
-- gcp_service_account
+Não coloques ficheiros secrets no GitHub. Os Secrets ficam apenas no Streamlit.

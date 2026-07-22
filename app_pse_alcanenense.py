@@ -38,7 +38,7 @@ ATLETAS = [
     "Outro"
 ]
 
-COLUNAS = ["Data e hora", "Data", "Hora", "Primeiro nome", "Segundo nome", "Atleta", "PSE", "Classificação"]
+COLUNAS = ["Data", "Hora", "Atleta", "PSE"]
 
 
 def classificar_pse(valor):
@@ -112,7 +112,7 @@ def guardar_resposta(resposta):
 
 
 def preparar_excel(df):
-    colunas_excel = ["Data e hora", "Atleta", "PSE", "Classificação"]
+    colunas_excel = ["Data", "Hora", "Atleta", "PSE"]
     df_excel = df[colunas_excel].copy()
     output = BytesIO()
     with pd.ExcelWriter(output, engine="openpyxl") as writer:
@@ -190,14 +190,10 @@ if pagina == "Atleta - Responder":
                 primeiro_nome = partes_nome[0] if len(partes_nome) > 0 else ""
                 segundo_nome = " ".join(partes_nome[1:]) if len(partes_nome) > 1 else ""
                 resposta = {
-                    "Data e hora": agora.strftime("%Y-%m-%d %H:%M:%S"),
                     "Data": agora.strftime("%Y-%m-%d"),
                     "Hora": agora.strftime("%H:%M:%S"),
-                    "Primeiro nome": primeiro_nome,
-                    "Segundo nome": segundo_nome,
                     "Atleta": atleta,
-                    "PSE": pse,
-                    "Classificação": classificar_pse(pse)
+                    "PSE": pse
                 }
                 erro = guardar_resposta(resposta)
                 if erro:
@@ -279,7 +275,7 @@ if pagina == "Treinador - Análise":
 
         tab1, tab2, tab3 = st.tabs(["Tabela", "Gráficos", "Exportar Excel"])
         with tab1:
-            st.dataframe(df_f[["Data e hora", "Atleta", "PSE", "Classificação"]], use_container_width=True, hide_index=True)
+            st.dataframe(df_f[["Data", "Hora", "Atleta", "PSE"]], use_container_width=True, hide_index=True)
         with tab2:
             fig = px.bar(df_f, x="Atleta", y="PSE", text="PSE", title="PSE por atleta", color="PSE", color_continuous_scale=[(0.0, "#f2f2f2"), (0.2, "#f0e48c"), (0.5, "#ffd000"), (0.8, "#ff8a00"), (1.0, "#e40012")])
             fig.update_layout(yaxis_range=[0, 10], coloraxis_showscale=False)
