@@ -1,15 +1,18 @@
-PSE Alcanenense - V12 Google Sheets simples
+PSE Alcanenense - V13 Secrets fácil
 
-Esta versão guarda no Google Sheets exatamente com estas colunas:
-A1: Data
-B1: Hora
-C1: Atleta
-D1: PSE
+Esta versão permite colar o JSON inteiro da service account nos Secrets do Streamlit, sem converter campo a campo.
 
-Ficheiros para carregar no GitHub:
+Secrets necessários no Streamlit:
+
+SHEET_ID = "ID_DA_TUA_GOOGLE_SHEET"
+WORKSHEET_NAME = "Respostas"
+PASSWORD_TREINADOR = "a_tua_password"
+GCP_SERVICE_ACCOUNT_JSON = '''
+COLOCA_AQUI_O_JSON_INTEIRO
+'''
+
+No GitHub, carregar apenas:
 - app_pse_alcanenense.py
 - requirements.txt
 - logo_aca.png
 - escala_pse.png
-
-Não coloques ficheiros secrets no GitHub. Os Secrets ficam apenas no Streamlit.
