@@ -73,7 +73,6 @@ def nivel_alerta(valor):
     return "elevado"
 
 
-@st.cache_resource
 def ligar_google_sheets():
     if "SHEET_ID" not in st.secrets:
         return None, "Falta o SHEET_ID nos Secrets do Streamlit."
@@ -87,7 +86,7 @@ def ligar_google_sheets():
     ]
 
     try:
-        service_account_info = json.loads(st.secrets["GCP_SERVICE_ACCOUNT_JSON"])
+        service_account_info = json.loads(str(st.secrets["GCP_SERVICE_ACCOUNT_JSON"]).strip())
     except Exception as e:
         return None, f"Erro ao ler o JSON da service account: {e}"
 
@@ -98,23 +97,33 @@ def ligar_google_sheets():
         )
 
         client = gspread.authorize(creds)
-        sheet = client.open_by_key(st.secrets["SHEET_ID"])
+        sheet = client.open_by_key(str(st.secrets["SHEET_ID"]).strip())
 
-        worksheet_name = st.secrets.get("WORKSHEET_NAME", "Respostas")
+        worksheet_name = str(st.secrets.get("WORKSHEET_NAME", "Respostas")).strip()
 
         try:
             worksheet = sheet.worksheet(worksheet_name)
         except gspread.WorksheetNotFound:
-            worksheet = sheet.add_worksheet(title=worksheet_name, rows=1000, cols=10)
+            worksheets = sheet.worksheets()
+            if worksheets:
+                worksheet = worksheets[0]
+            else:
+                worksheet = sheet.add_worksheet(title=worksheet_name, rows=1000, cols=10)
 
         valores = worksheet.get_all_values()
+
         if not valores:
             worksheet.append_row(COLUNAS)
+        else:
+            primeira_linha = valores[0]
+            if primeira_linha[:4] != COLUNAS:
+                # Não apaga nada, apenas continua. A tabela pode já ter cabeçalho criado pelo utilizador.
+                pass
 
         return worksheet, None
 
     except Exception as e:
-        return None, str(e)
+        return None, f"Erro ao ligar ao Google Sheets: {e}"
 
 
 def carregar_dados():
@@ -122,6 +131,9 @@ def carregar_dados():
 
     if erro:
         return pd.DataFrame(columns=COLUNAS), erro
+
+    if worksheet is None:
+        return pd.DataFrame(columns=COLUNAS), "A ligação ao Google Sheets voltou vazia."
 
     try:
         records = worksheet.get_all_records()
@@ -147,6 +159,9 @@ def guardar_resposta(resposta):
 
     if erro:
         return erro
+
+    if worksheet is None:
+        return "A ligação ao Google Sheets voltou vazia. Confirma a partilha da folha com o client_email."
 
     try:
         linha = [resposta.get(col, "") for col in COLUNAS]
